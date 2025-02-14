@@ -7,6 +7,8 @@ This repository documents the setup and configuration of Proxmox and pfSense for
 - [Installing and Configuring pfSense](docs/pfSense_Installation.md)
 - [Troubleshooting Network Issues](docs/Network_Issues_Fix.md)
 - [Setting Up Internet Access](docs/Internet_Access.md)
+- [Setting Up WireGuard VPN](docs/WireGuard_VPN_Setup.md)
+- [Installing Docker on Ubuntu Server](Ubuntu_Server_Docker_Setup.md)
 
 ## Overview
 This lab serves as a platform for learning virtualization and networking with open-source tools. Proxmox provides the virtualization layer, while pfSense acts as the firewall and router for internal network segmentation.
