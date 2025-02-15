@@ -10,7 +10,7 @@ This repository documents the setup and configuration of Proxmox and pfSense for
 - [Setting Up WireGuard VPN](docs/WireGuard_VPN_Setup.md)
 - [Installing Docker on Ubuntu Server](docs/Ubuntu_Server_Docker_Setup.md)
 - [Installing Metasploitable2 on Proxmox Server](docs/Metasploitable2-Proxmox.md)
-- [Kali pfSense Firewall Setup](docs/Kali_pfSense_Firewall_Setup.md)
+- [Configuring Firewall Rules with pfSense and Kali](docs/Kali_pfSense_Firewall_Setup.md)
 
 ## Overview
 This lab serves as a platform for learning virtualization, networking, and ethical hacking using open-source tools. Proxmox provides the virtualization layer, while pfSense acts as the firewall and router for internal network segmentation.
