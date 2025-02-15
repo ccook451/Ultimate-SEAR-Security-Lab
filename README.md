@@ -5,6 +5,7 @@ This repository documents the setup and configuration of Proxmox and pfSense for
 ## Table of Contents
 - [Proxmox Setup](docs/Proxmox_Setup.md)
 - [Installing and Configuring pfSense](docs/pfSense_Installation.md)
+- [Setting Up Kali with pfSense Firewall Rules](docs/Kali_pfSense_Firewall_Setup.md)
 - [Troubleshooting Network Issues](docs/Network_Issues_Fix.md)
 - [Setting Up Internet Access](docs/Internet_Access.md)
 - [Setting Up WireGuard VPN](docs/WireGuard_VPN_Setup.md)
