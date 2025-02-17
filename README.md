@@ -13,6 +13,7 @@ This repository documents the setup and configuration of Proxmox and pfSense for
 - [Configuring Firewall Rules with pfSense and Kali](docs/Kali_pfSense_Firewall_Setup.md)
 - [Portainer Testing and Network Configuration](docs/Portainer_Testing_and_Network_Configuration.md)
 
+
 ## Overview
 This lab serves as a platform for learning virtualization, networking, and ethical hacking using open-source tools. Proxmox provides the virtualization layer, while pfSense acts as the firewall and router for internal network segmentation.
 
