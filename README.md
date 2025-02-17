@@ -15,6 +15,7 @@ This repository documents the setup and configuration of Proxmox and pfSense for
 
 
 
+
 ## Overview
 This lab serves as a platform for learning virtualization, networking, and ethical hacking using open-source tools. Proxmox provides the virtualization layer, while pfSense acts as the firewall and router for internal network segmentation.
 
