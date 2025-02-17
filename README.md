@@ -10,7 +10,7 @@ This repository documents the setup and configuration of Proxmox and pfSense for
 - [Setting Up WireGuard VPN](docs/WireGuard_VPN_Setup.md)
 - [Installing Docker on Ubuntu Server](docs/Ubuntu_Server_Docker_Setup.md)
 - [Installing Metasploitable2 on Proxmox Server](docs/Metasploitable2-Proxmox.md)
-- [Configuring Firewall Rules with pfSense and Kali](docs/Kali_pfSense_Firewall_Setup.md)
+- [Configuring Firewall Rules with pfSense and Kali](docs/pfSense_Kali_Lab_Setup.md)
 - [Portainer Testing and Network Configuration](docs/Portainer%20Testing%20and%20Network%20Configuration.md)
 
 
