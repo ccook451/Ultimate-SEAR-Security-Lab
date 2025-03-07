@@ -1,4 +1,4 @@
-# HybridCyberLab
+# Ultimate-SEAR-Security-Lab
 
 This repository documents the setup and configuration of Proxmox and pfSense for a hybrid home lab environment. The steps include setting up Proxmox, installing pfSense as a virtual machine, configuring network settings for internal LAN and WAN access, and deploying a vulnerable lab environment for penetration testing practice.
 
