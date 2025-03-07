@@ -13,7 +13,7 @@ This repository documents the setup and configuration of Proxmox and pfSense for
 - [Configuring Firewall Rules with pfSense and Kali](docs/pfSense_Kali_Lab_Setup.md)
 - [Portainer Testing and Network Configuration](docs/Portainer%20Testing%20and%20Network%20Configuration.md)
 - [Wazuh Setup in Proxmox](docs/Wazuh_Setup_Guide.md)
-
+- [Installing and Configuring Wazuh and Nessus in Proxmox](docs/Wazuh_Nessus_Proxmox_Setup.md)
 
 
 ## Overview
