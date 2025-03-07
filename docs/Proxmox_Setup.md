@@ -150,7 +150,7 @@ sequenceDiagram
 
 This guide serves as a reference for future Proxmox VE installations and network troubleshooting. The Mermaid.js diagrams help visualize the installation, troubleshooting, and network processes.
 
-💪 Next Steps:
+✅ Next Steps:
 
 👉 Deploy virtual machines for cybersecurity lab simulations.
 
