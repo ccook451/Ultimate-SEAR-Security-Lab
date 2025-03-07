@@ -1,65 +1,92 @@
+# Proxmox Setup on Dell Latitude 5450
+
 ## Overview
-
-This guide documents the installation process and troubleshooting steps I took to install and configure Proxmox VE on a Dell Latitude 5450. This project involved setting up a custom network configuration and resolving multiple network and connectivity issues to access the Proxmox web interface successfully.
-
----
+This guide documents the installation process and troubleshooting steps for setting up Proxmox VE on a Dell Latitude 5450. This project involved configuring a custom network and resolving multiple connectivity issues to successfully access the Proxmox web interface.
 
 ## Installation Process
 
-### 1. Creating a Bootable USB
+### 1️⃣ Creating a Bootable USB
+I used **Rufus** to flash the Proxmox ISO onto a USB drive with the following settings:
+- **Partition Scheme**: MBR
+- **Target System**: BIOS or UEFI
+- **File System**: FAT32
 
-- I used [Rufus](https://rufus.ie/) to flash the Proxmox ISO to a USB drive.
-- **Partition Scheme:** MBR
-- **Target System:** BIOS or UEFI
-- **File System:** FAT32
-- After completing the process, the USB drive was detected, and I proceeded to boot into Proxmox on the Dell Latitude 5450.
+After flashing, the USB was detected, and I booted into Proxmox on the Dell Latitude 5450.
 
-### 2. Proxmox Installation
+### 2️⃣ Proxmox Installation
+- **Static IP**: `10.0.0.200/24`
+- **Gateway**: `10.0.0.1`
+- **DNS Server**: `8.8.8.8`
 
-- **Static IP:** `10.0.0.200/24`
-- **Gateway:** `10.0.0.1`
-- **DNS Server:** `8.8.8.8`
-- Completed the installation and rebooted the system.
+After installation, the system rebooted successfully.
+
+```mermaid
+graph TD;
+    A[Download Proxmox ISO] --> B[Create Bootable USB with Rufus];
+    B --> C[Boot into Dell Latitude 5450];
+    C --> D[Set Static IP: 10.0.0.200/24];
+    D --> E[Set Gateway: 10.0.0.1];
+    E --> F[Set DNS: 8.8.8.8];
+    F --> G[Complete Installation & Reboot];
+    G --> H[Proxmox Installed Successfully ✅];
+```
 
 ---
 
 ## Troubleshooting Process
 
-### **Network Configuration Issues**
+### 3️⃣ Network Configuration Issues
+After reboot, I couldn’t access the Proxmox web interface at `https://10.0.0.200:8006`. I followed these troubleshooting steps:
 
-Upon rebooting, I was unable to access the Proxmox web interface at `https://10.0.0.200:8006`. Troubleshooting steps included:
-
-1. **Checking Network Interface Status**
-```python
-ip a
-
+```mermaid
+graph TD;
+    A[Unable to Access Proxmox Web Interface] --> B[Check Network Interface: ip a];
+    B --> C{Does enp0s31f6 Show NO-CARRIER?};
+    C -->|Yes| D[Check Ethernet Cable & Connection];
+    C -->|No| E[Check Firewall & Service Status];
+    D --> F[Assign Static IP on ASUS: 10.0.0.210];
+    E --> G[Check if Port 8006 is Listening];
+    G --> H[Stop pve-firewall Temporarily];
+    F --> I[Update Proxmox Network Configuration];
+    I --> J[Restart Networking Service];
+    H --> K[Access Web Interface];
+    J --> K;
 ```
 
-1. - Initially, `enp0s31f6` (Ethernet) showed `NO-CARRIER`.
-    - Verified that the Ethernet cable was connected properly.
+### 4️⃣ Network Setup (Dell Latitude 5450 + ASUS via Dock)
 
-### **Ethernet Connection Setup**
+```mermaid
+graph TD;
+    A[Dell Latitude 5450 - Proxmox VE] -- Ethernet --> B[USB-C Dock];
+    B -- Ethernet --> C[ASUS ROG Zephyrus];
+    C --> D[Manual Static IP Assignment];
+    D --> E[ASUS IP: 10.0.0.210];
+    D --> F[Proxmox IP: 10.0.0.200];
+    E --> G[Successful Network Connection ✅];
+    F --> G;
+```
 
-Since my ASUS ROG Zephyrus doesn’t have an Ethernet port, I connected the Ethernet cable from the Dell Latitude 5450 directly to my USB-C dock, which was plugged into the ASUS. This created a direct connection for network communication between the two devices.
+---
 
-### **Problems Encountered**
+## Proxmox Network Configuration
 
-- Initially, I couldn't get the Dell Latitude 5450 to communicate with the ASUS through this setup.
-- The network adapter on the ASUS wasn’t receiving an IP address in the correct subnet (`10.0.0.x`).
-- After verifying that the dock’s Ethernet connection was functioning and the cable was properly connected, I assigned a static IP on the ASUS in the same subnet as Proxmox.
+### 5️⃣ Editing Network Configuration (/etc/network/interfaces)
 
-### **Manual Static IP Assignment**
+```mermaid
+graph TD;
+    A[Proxmox Network Configuration] --> B[auto lo];
+    B --> C[iface lo inet loopback];
+    C --> D[auto enp0s31f6];
+    D --> E[iface enp0s31f6 inet static];
+    E --> F[address 10.0.0.200/24];
+    F --> G[gateway 10.0.0.1];
+    G --> H[dns-nameservers 8.8.8.8];
+```
 
-On the ASUS, I configured the Ethernet adapter with the following settings:
+```bash
+nano /etc/network/interfaces
 
-- **IP Address:** `10.0.0.210`
-- **Subnet Mask:** `255.255.255.0`
-- **Gateway:** `10.0.0.200`
-
-### **Editing Network Configuration on Proxmox**
-
-On the Dell Latitude 5450, I updated the network configuration in `/etc/network/interfaces`:
-```python
+# Updated Configuration
 auto lo
 iface lo inet loopback
 
@@ -68,71 +95,71 @@ iface enp0s31f6 inet static
     address 10.0.0.200/24
     gateway 10.0.0.1
     dns-nameservers 8.8.8.8
-
-
 ```
 
-### **Restarting Networking Service**
-
-```python
+Restart networking after changes:
+```bash
 systemctl restart networking
-
 ```
-
-### **Testing Connectivity**
-
-- Pinged both the ASUS (`10.0.0.210`) and the Dell (`10.0.0.200`) to confirm connectivity.
-- Verified that `Port 8006` was listening:
-```python
-netstat -tuln | grep 8006
-
-```
-
-### **Disabling Firewall Temporarily**
-```python
-pve-firewall stop
-
-```
-
-## Accessing the Proxmox Web Interface
-
-After troubleshooting, I successfully accessed the Proxmox web interface at:  
-`https://10.0.0.200:8006`
-
-1. **Username:** `root`
-2. **Realm:** `Linux PAM standard authentication`
 
 ---
 
-## Lessons Learned
+### 6️⃣ Key Commands for Troubleshooting
 
-- Always verify both ends of a direct Ethernet connection when using a docking station.
-- Static IP assignment on both the Proxmox server and the connected device simplifies network troubleshooting.
-- Linux networking commands (`ip a`, `ping`, `systemctl`, `netstat`) are invaluable for identifying and resolving connectivity issues.
+```mermaid
+graph TD;
+    A[ip a] --> B[Check Network Interfaces];
+    B --> C[nano /etc/network/interfaces];
+    C --> D[Edit Network Configuration];
+    D --> E[systemctl restart networking];
+    E --> F[Restart Networking Service];
+    F --> G[pve-firewall stop];
+    G --> H[Disable Firewall];
+    H --> I[ping 10.0.0.200];
+    I --> J[Confirm Proxmox Server is Reachable];
+    J --> K[netstat -tuln | grep 8006];
+    K --> L[Check if Proxmox Web UI is Listening];
+```
 
----
-
-## Future Plans
-
-- Create virtual machines for cybersecurity lab simulations.
-- Configure VLANs and multiple bridges for different virtual networks.
-- Automate backups and integrate monitoring.
-## Commands Summary
-
-Here’s a list of the key commands I used during the troubleshooting process:
-```python
+**Summary of Commands:**
+```bash
 ip a                                # Check network interfaces
 nano /etc/network/interfaces        # Edit network configuration
-systemctl restart networking         # Restart networking service
+systemctl restart networking        # Restart networking service
 systemctl status pveproxy           # Check Proxmox proxy service status
 pve-firewall stop                   # Stop Proxmox firewall
 ping 10.0.0.1                       # Ping gateway
 ping 10.0.0.200                     # Ping Proxmox server
 netstat -tuln | grep 8006           # Check if Port 8006 is listening
-
-
 ```
 
-## Conclusion
+---
 
-This guide serves as a reference for future installations and network troubleshooting within Proxmox VE. By following the steps outlined, I ensured a successful setup and addressed potential connectivity issues.
+### 7️⃣ Network Traffic Flow (Proxmox Web UI)
+
+```mermaid
+sequenceDiagram
+    participant User as User (ASUS)
+    participant Network as Local Network (10.0.0.x)
+    participant Proxmox as Proxmox Server (Dell Latitude 5450)
+    
+    User->>Network: Request to https://10.0.0.200:8006
+    Network->>Proxmox: Route Traffic to Port 8006
+    Proxmox->>Network: Response from Proxmox Web UI
+    Network->>User: Display Proxmox Dashboard
+```
+
+---
+
+## Conclusion
+This guide serves as a reference for future **Proxmox VE** installations and **network troubleshooting**. The **Mermaid.js diagrams** help **visualize** the installation, troubleshooting, and network processes.
+
+✅ **Next Steps:**
+- Deploy virtual machines for **cybersecurity lab simulations**.
+- Configure **VLANs and multiple bridges** for isolated networks.
+- Set up **automated backups and monitoring**.
+
+### 🎯 **Would love your feedback!**
+If this guide helped you, consider **starring the repo** ⭐ or suggesting improvements!
+
+---
