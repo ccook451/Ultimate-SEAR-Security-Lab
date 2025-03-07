@@ -15,6 +15,7 @@ This repository documents the setup and configuration of Proxmox and pfSense for
 - [Wazuh Setup in Proxmox](docs/Wazuh_Setup_Guide.md)
 - [Installing and Configuring Wazuh and Nessus in Proxmox](docs/Wazuh_Nessus_Proxmox_Setup.md)
 - [Caldera and Security Onion Setup in Proxmox](docs/Caldera_and_Security_Onion_Setup.md)
+- [Setting Up Windows Server 2022 and Windows 10 in Proxmox](docs/Setting_Up_Windows_Server_2022_and_Windows_10.md)
 
 ## Overview
 This lab serves as a platform for learning virtualization, networking, and ethical hacking using open-source tools. Proxmox provides the virtualization layer, while pfSense acts as the firewall and router for internal network segmentation.
