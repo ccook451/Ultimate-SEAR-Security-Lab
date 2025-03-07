@@ -17,18 +17,19 @@ After flashing, the USB was detected, and I booted into Proxmox on the Dell Lati
 
 ```mermaid
 graph TD;
-    A(Create Bootable USB with Rufus) -->|Boot from USB| B(Start Proxmox Installation);
-    B --> C(Configure Static IP 10.0.0.200);
-    C --> D(Set Gateway 10.0.0.1);
-    D --> E(Set DNS 8.8.8.8);
-    E --> F(Complete Installation and Reboot);
+    A[Create Bootable USB with Rufus] --> B[Boot from USB];
+    B --> C[Start Proxmox Installation];
+    C --> D[Configure Static IP 10.0.0.200];
+    D --> E[Set Gateway 10.0.0.1];
+    E --> F[Set DNS 8.8.8.8];
+    F --> G[Complete Installation and Reboot];
 ```
 
 ### 2️⃣ Proxmox Installation
 I configured static network settings during installation:
-- **Static IP:** `10.0.0.200/24`
-- **Gateway:** `10.0.0.1`
-- **DNS Server:** `8.8.8.8`
+- **Static IP:** 10.0.0.200/24
+- **Gateway:** 10.0.0.1
+- **DNS Server:** 8.8.8.8
 
 After installation, the system rebooted successfully.
 
@@ -41,13 +42,13 @@ After reboot, I could not access the Proxmox web interface at `https://10.0.0.20
 
 ```mermaid
 graph TD;
-    A(Check Network Interfaces - `ip a`) --> B(Verify Ethernet Cable is Connected);
-    B --> C(Check `enp0s31f6` Status - NO-CARRIER);
-    C --> D(Assign Static IP on Client Device);
-    D --> E(Verify Port 8006 is Listening - `netstat`);
-    E --> F(Restart Networking - `systemctl restart networking`);
-    F --> G(Stop Proxmox Firewall - `pve-firewall stop`);
-    G --> H(Access Web UI - `https://10.0.0.200:8006`);
+    A[Check Network Interfaces - ip a] --> B[Verify Ethernet Cable is Connected];
+    B --> C[Check enp0s31f6 Status - NO-CARRIER];
+    C --> D[Assign Static IP on Client Device];
+    D --> E[Verify Port 8006 is Listening - netstat];
+    E --> F[Restart Networking - systemctl restart networking];
+    F --> G[Stop Proxmox Firewall - pve-firewall stop];
+    G --> H[Access Web UI - Proxmox Web Interface];
 ```
 
 ### 4️⃣ Network Setup (Dell Latitude 5450 + ASUS via Dock)
@@ -55,12 +56,12 @@ Since my ASUS ROG Zephyrus doesn’t have an Ethernet port, I used a USB-C Dock 
 
 ```mermaid
 graph LR;
-    A(Proxmox Server - Dell Latitude 5450) -- Ethernet --> B(USB-C Dock);
-    B -- Ethernet --> C(ASUS ROG Zephyrus);
-    C -- Web Browser --> D(Proxmox Web UI);
+    A[Proxmox Server - Dell Latitude 5450] -- Ethernet --> B[USB-C Dock];
+    B -- Ethernet --> C[ASUS ROG Zephyrus];
+    C -- Web Browser --> D[Proxmox Web UI];
 ```
 
-### 5️⃣ Editing Network Configuration (`/etc/network/interfaces`)
+### 5️⃣ Editing Network Configuration
 To manually configure Proxmox networking, I updated the network configuration file:
 
 ```bash
@@ -91,12 +92,11 @@ systemctl restart networking
 
 ```mermaid
 graph TD;
-    A(`ip a`) --> B(Check Network Interfaces);
-    B --> C(Edit Network Configuration - `nano /etc/network/interfaces`);
-    C --> D(Restart Networking Service - `systemctl restart networking`);
-    D --> E(Stop Proxmox Firewall - `pve-firewall stop`);
-    E --> F(Ping Proxmox Server - `ping 10.0.0.200`);
-    F --> G(Verify Port 8006 - `netstat -tuln | grep 8006`);
+    A[Check Network Interfaces - ip a] --> B[Edit Network Configuration - nano /etc/network/interfaces];
+    B --> C[Restart Networking - systemctl restart networking];
+    C --> D[Stop Proxmox Firewall - pve-firewall stop];
+    D --> E[Ping Proxmox Server - ping 10.0.0.200];
+    E --> F[Verify Port 8006 is Listening - netstat -tuln grep 8006];
 ```
 
 ---
@@ -123,7 +123,7 @@ sequenceDiagram
     participant User as Web Browser (ASUS)
     participant Proxmox as Proxmox Server (Dell Latitude 5450)
 
-    User->>Proxmox: HTTPS Request to `10.0.0.200:8006`
+    User->>Proxmox: HTTPS Request to 10.0.0.200:8006
     Proxmox-->>User: Proxmox Web UI Response
 ```
 
